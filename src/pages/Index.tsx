@@ -15,34 +15,14 @@ export default function Index() {
   const [result, setResult] = useState<Character | null>(null);
   const [showStats, setShowStats] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [actualResult, setActualResult] = useState<Character | null>(null);
   const [showUnlockModal, setShowUnlockModal] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const initAudio = async () => {
-      try {
-        audioRef.current = new Audio('https://assets.mixkit.co/music/download/mixkit-halloween-spooky-dark-atmospheric-background-music-2822.mp3');
-        audioRef.current.loop = true;
-        audioRef.current.volume = 0.25;
-        
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              setIsMusicPlaying(true);
-            })
-            .catch((err) => {
-              console.log('Audio autoplay blocked:', err);
-              setIsMusicPlaying(false);
-            });
-        }
-      } catch (err) {
-        console.log('Audio init error:', err);
-        setIsMusicPlaying(false);
-      }
-    };
-    
-    initAudio();
+    audioRef.current = new Audio('https://assets.mixkit.co/music/download/mixkit-halloween-spooky-dark-atmospheric-background-music-2822.mp3');
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.25;
     
     return () => {
       if (audioRef.current) {
@@ -57,10 +37,12 @@ export default function Index() {
     if (audioRef.current) {
       if (isMusicPlaying) {
         audioRef.current.pause();
+        setIsMusicPlaying(false);
       } else {
-        audioRef.current.play().catch(err => console.log('Audio play error:', err));
+        audioRef.current.play()
+          .then(() => setIsMusicPlaying(true))
+          .catch(err => console.log('Audio play error:', err));
       }
-      setIsMusicPlaying(!isMusicPlaying);
     }
   };
 
@@ -115,7 +97,7 @@ export default function Index() {
     const character = characters.find(c => c.id === resultCharacter);
     const finalResult = character || characters[0];
     
-    setResult(finalResult);
+    setActualResult(finalResult);
     setShowUnlockModal(true);
 
     const totalTests = parseInt(localStorage.getItem('totalTests') || '0') + 1;
@@ -134,12 +116,15 @@ export default function Index() {
       setShowResult(true);
       
       setTimeout(() => {
-        alert('🎃 Спасибо за просмотр! Слендермен разблокирован!');
+        alert('🎃 Спасибо за просмотр рекламы! Слендермен разблокирован!');
       }, 300);
     }
   };
 
   const handleCloseModal = () => {
+    if (actualResult) {
+      setResult(actualResult);
+    }
     setShowUnlockModal(false);
     setShowResult(true);
   };
@@ -154,15 +139,20 @@ export default function Index() {
   };
 
   const startTest = () => {
+    if (audioRef.current && !isMusicPlaying) {
+      audioRef.current.play()
+        .then(() => setIsMusicPlaying(true))
+        .catch(() => {});
+    }
     setStarted(true);
     setCurrentQuestion(0);
     setQuestionHistory([]);
   };
 
-  if (showUnlockModal && result) {
+  if (showUnlockModal && actualResult) {
     return (
       <UnlockModal
-        characterName={result.name}
+        characterName={actualResult.name}
         onWatchAd={handleWatchAd}
         onClose={handleCloseModal}
       />
