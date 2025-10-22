@@ -139,14 +139,19 @@ export default function Index() {
   };
 
   const startTest = () => {
-    if (audioRef.current && !isMusicPlaying) {
-      audioRef.current.play()
-        .then(() => setIsMusicPlaying(true))
-        .catch(() => {});
-    }
     setStarted(true);
     setCurrentQuestion(0);
     setQuestionHistory([]);
+    
+    setTimeout(() => {
+      if (audioRef.current && !isMusicPlaying) {
+        audioRef.current.play()
+          .then(() => setIsMusicPlaying(true))
+          .catch(err => {
+            console.log('Музыка будет доступна после взаимодействия:', err);
+          });
+      }
+    }, 100);
   };
 
   if (showUnlockModal && actualResult) {

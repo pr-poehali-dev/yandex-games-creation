@@ -75,9 +75,9 @@ export function QuestionScreen({
               <Button
                 key={index}
                 onClick={() => onAnswer(option.character)}
-                className="h-auto py-4 px-4 text-base font-body bg-orange-950/50 hover:bg-gradient-to-r hover:from-orange-700 hover:to-red-700 border-2 border-orange-600 text-orange-100 hover:text-white transition-all hover:scale-105 shadow-lg hover:shadow-orange-600/50"
+                className="h-auto py-4 px-4 text-base font-body bg-gradient-to-br from-orange-950 to-black hover:bg-gradient-to-r hover:from-orange-600 hover:to-red-600 border-2 border-orange-500 text-white hover:text-white transition-all hover:scale-105 shadow-lg hover:shadow-orange-500/60 hover:border-orange-400"
               >
-                <div className="text-left w-full break-words">
+                <div className="text-left w-full break-words font-semibold">
                   {option.text}
                 </div>
               </Button>

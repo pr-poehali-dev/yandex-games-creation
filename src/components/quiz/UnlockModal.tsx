@@ -20,32 +20,32 @@ export function UnlockModal({ characterName, onWatchAd, onClose }: UnlockModalPr
           </div>
           
           <div className="bg-black/40 rounded-lg p-4 border-2 border-orange-400">
-            <h2 className="text-3xl font-game text-orange-400 mb-2 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]">
+            <h2 className="text-3xl font-game text-orange-400 mb-3 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]">
               🔥 Секретная награда! 🔥
             </h2>
             <p className="text-lg text-orange-200 mb-3">
-              Разблокируйте <span className="font-bold text-red-400 animate-pulse">СЛЕНДЕРМЕНА</span> - самого жуткого персонажа!
+              Разблокируй <span className="font-bold text-red-400 animate-pulse">СЛЕНДЕРМЕНА</span> - самого жуткого персонажа!
             </p>
             <p className="text-sm text-orange-300">
-              👁️ Посмотрите короткую рекламу и получите доступ к секретному персонажу навсегда!
+              👁️ Посмотри рекламу и получи доступ навсегда!
             </p>
           </div>
 
           <div className="space-y-3">
             <Button
               onClick={onWatchAd}
-              className="w-full h-16 text-xl font-game bg-gradient-to-r from-orange-600 via-red-600 to-orange-600 hover:scale-105 transition-transform shadow-lg shadow-orange-600/60 animate-pulse"
+              className="w-full h-16 text-lg font-game bg-gradient-to-r from-orange-600 via-red-600 to-orange-600 hover:scale-105 transition-transform shadow-lg shadow-orange-600/60 animate-pulse flex items-center justify-center"
             >
-              <Icon name="Gift" size={26} className="mr-2" />
-              🎬 Посмотреть рекламу и разблокировать
+              <Icon name="Gift" size={24} className="mr-2 flex-shrink-0" />
+              <span className="break-words">Посмотреть рекламу</span>
             </Button>
 
             <Button
               onClick={onClose}
               variant="outline"
-              className="w-full h-12 border-2 border-orange-600 hover:bg-orange-950/40 text-orange-300 hover:text-orange-200"
+              className="w-full h-auto py-3 border-2 border-orange-600 hover:bg-orange-950/40 text-orange-300 hover:text-orange-200"
             >
-              Нет, спасибо. Показать мой результат: <span className="font-bold ml-1">{characterName}</span>
+              <span className="break-words text-center">Показать результат: <span className="font-bold">{characterName}</span></span>
             </Button>
           </div>
         </div>
