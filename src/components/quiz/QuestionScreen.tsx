@@ -10,8 +10,12 @@ interface QuestionScreenProps {
   totalQuestions: number;
   isMusicPlaying: boolean;
   onAnswer: (character: string) => void;
+  onPrevious: () => void;
+  onNext: () => void;
   onRestart: () => void;
   onToggleMusic: () => void;
+  canGoPrevious: boolean;
+  canGoNext: boolean;
 }
 
 export function QuestionScreen({ 
@@ -20,8 +24,12 @@ export function QuestionScreen({
   totalQuestions, 
   isMusicPlaying,
   onAnswer, 
+  onPrevious,
+  onNext,
   onRestart,
-  onToggleMusic
+  onToggleMusic,
+  canGoPrevious,
+  canGoNext
 }: QuestionScreenProps) {
   const progress = ((currentQuestion + 1) / totalQuestions) * 100;
 
@@ -57,23 +65,46 @@ export function QuestionScreen({
           </div>
 
           <div className="text-center py-6">
-            <h2 className="text-3xl font-game text-orange-500 mb-2 drop-shadow-[0_0_8px_rgba(249,115,22,0.4)]">
+            <h2 className="text-2xl md:text-3xl font-game text-orange-500 mb-2 drop-shadow-[0_0_8px_rgba(249,115,22,0.4)] break-words">
               {question.text}
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-3">
             {question.options.map((option, index) => (
               <Button
                 key={index}
                 onClick={() => onAnswer(option.character)}
-                className="h-auto py-6 px-6 text-lg font-body bg-orange-950/50 hover:bg-gradient-to-r hover:from-orange-700 hover:to-red-700 border-2 border-orange-600 text-orange-100 hover:text-white transition-all hover:scale-105 shadow-lg hover:shadow-orange-600/50"
+                className="h-auto py-4 px-4 text-base font-body bg-orange-950/50 hover:bg-gradient-to-r hover:from-orange-700 hover:to-red-700 border-2 border-orange-600 text-orange-100 hover:text-white transition-all hover:scale-105 shadow-lg hover:shadow-orange-600/50"
               >
-                <div className="text-left w-full">
+                <div className="text-left w-full break-words">
                   {option.text}
                 </div>
               </Button>
             ))}
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              onClick={onPrevious}
+              disabled={!canGoPrevious}
+              variant="outline"
+              className="flex-1 border-2 border-orange-600 hover:bg-orange-950/30 text-orange-300 hover:text-orange-200 disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <Icon name="ChevronLeft" size={20} className="mr-1" />
+              Назад
+            </Button>
+
+            {canGoNext && (
+              <Button
+                onClick={onNext}
+                variant="outline"
+                className="flex-1 border-2 border-orange-600 hover:bg-orange-950/30 text-orange-300 hover:text-orange-200"
+              >
+                Далее
+                <Icon name="ChevronRight" size={20} className="ml-1" />
+              </Button>
+            )}
           </div>
 
           <Button

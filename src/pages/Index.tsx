@@ -3,22 +3,26 @@ import { questions, characters } from '@/components/quiz/data';
 import { StartScreen } from '@/components/quiz/StartScreen';
 import { QuestionScreen } from '@/components/quiz/QuestionScreen';
 import { ResultScreen } from '@/components/quiz/ResultScreen';
+import { UnlockModal } from '@/components/quiz/UnlockModal';
 import { Character } from '@/components/quiz/types';
 
 export default function Index() {
   const [started, setStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [questionHistory, setQuestionHistory] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState<Character | null>(null);
   const [showStats, setShowStats] = useState(false);
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
+  const [showUnlockModal, setShowUnlockModal] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio('https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3');
+    audioRef.current = new Audio('https://assets.mixkit.co/music/preview/mixkit-halloween-horror-582.mp3');
     audioRef.current.loop = true;
-    audioRef.current.volume = 0.3;
+    audioRef.current.volume = 0.4;
+    audioRef.current.play().catch(err => console.log('Audio autoplay blocked:', err));
     
     return () => {
       if (audioRef.current) {
@@ -44,10 +48,35 @@ export default function Index() {
     newAnswers[character] = (newAnswers[character] || 0) + 1;
     setAnswers(newAnswers);
 
+    const newHistory = [...questionHistory, character];
+    setQuestionHistory(newHistory);
+
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       calculateResult(newAnswers);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestion > 0) {
+      const newHistory = [...questionHistory];
+      const lastAnswer = newHistory.pop();
+      
+      if (lastAnswer) {
+        const newAnswers = { ...answers };
+        newAnswers[lastAnswer] = Math.max(0, (newAnswers[lastAnswer] || 1) - 1);
+        setAnswers(newAnswers);
+        setQuestionHistory(newHistory);
+      }
+      
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentQuestion < questions.length - 1 && questionHistory.length > currentQuestion) {
+      setCurrentQuestion(currentQuestion + 1);
     }
   };
 
@@ -65,8 +94,15 @@ export default function Index() {
     const character = characters.find(c => c.id === resultCharacter);
     const finalResult = character || characters[0];
     
-    setResult(finalResult);
-    setShowResult(true);
+    const isUnlocked = localStorage.getItem(`unlocked_${resultCharacter}`) === 'true';
+    
+    if (finalResult.isLocked && !isUnlocked) {
+      setResult(finalResult);
+      setShowUnlockModal(true);
+    } else {
+      setResult(finalResult);
+      setShowResult(true);
+    }
 
     const totalTests = parseInt(localStorage.getItem('totalTests') || '0') + 1;
     localStorage.setItem('totalTests', totalTests.toString());
@@ -75,10 +111,28 @@ export default function Index() {
     localStorage.setItem(resultCharacter, charCount.toString());
   };
 
+  const handleWatchAd = () => {
+    if (result) {
+      localStorage.setItem(`unlocked_${result.id}`, 'true');
+      setShowUnlockModal(false);
+      setShowResult(true);
+      
+      setTimeout(() => {
+        alert('🎃 Спасибо за просмотр! Персонаж разблокирован!');
+      }, 300);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowUnlockModal(false);
+    restart();
+  };
+
   const restart = () => {
     setStarted(false);
     setCurrentQuestion(0);
     setAnswers({});
+    setQuestionHistory([]);
     setShowResult(false);
     setResult(null);
   };
@@ -86,7 +140,18 @@ export default function Index() {
   const startTest = () => {
     setStarted(true);
     setCurrentQuestion(0);
+    setQuestionHistory([]);
   };
+
+  if (showUnlockModal && result) {
+    return (
+      <UnlockModal
+        characterName={result.name}
+        onWatchAd={handleWatchAd}
+        onClose={handleCloseModal}
+      />
+    );
+  }
 
   if (showResult && result) {
     const totalTests = parseInt(localStorage.getItem('totalTests') || '0');
@@ -132,8 +197,12 @@ export default function Index() {
       totalQuestions={questions.length}
       isMusicPlaying={isMusicPlaying}
       onAnswer={handleAnswer}
+      onPrevious={handlePrevious}
+      onNext={handleNext}
       onRestart={restart}
       onToggleMusic={toggleMusic}
+      canGoPrevious={currentQuestion > 0}
+      canGoNext={questionHistory.length > currentQuestion}
     />
   );
 }

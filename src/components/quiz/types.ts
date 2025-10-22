@@ -15,4 +15,5 @@ export interface Character {
   traits: string[];
   color: string;
   image: string;
+  isLocked: boolean;
 }
