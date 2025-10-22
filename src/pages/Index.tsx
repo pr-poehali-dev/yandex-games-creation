@@ -74,12 +74,152 @@ const questions: Question[] = [
   },
   {
     id: 6,
-    text: 'Твоя любимая активность?',
+    text: 'Твоя любимая активность в игре?',
     options: [
       { text: 'Добывать ресурсы', character: 'steve' },
       { text: 'Исследовать биомы', character: 'alex' },
       { text: 'Подкрадываться незаметно', character: 'creeper' },
       { text: 'Торговать и обмениваться', character: 'villager' }
+    ]
+  },
+  {
+    id: 7,
+    text: 'Какое оружие ты выберешь?',
+    options: [
+      { text: 'Алмазный меч', character: 'steve' },
+      { text: 'Лук и стрелы', character: 'alex' },
+      { text: 'Сам себе оружие', character: 'creeper' },
+      { text: 'Мне не нужно оружие', character: 'villager' }
+    ]
+  },
+  {
+    id: 8,
+    text: 'Твой любимый биом?',
+    options: [
+      { text: 'Горы - много ресурсов', character: 'steve' },
+      { text: 'Джунгли - полны приключений', character: 'alex' },
+      { text: 'Темный лес - загадочный', character: 'creeper' },
+      { text: 'Равнины - спокойные', character: 'villager' }
+    ]
+  },
+  {
+    id: 9,
+    text: 'Как ты относишься к риску?',
+    options: [
+      { text: 'Риск оправдан ради цели', character: 'steve' },
+      { text: 'Обожаю риск и адреналин', character: 'alex' },
+      { text: 'Я сам и есть риск', character: 'creeper' },
+      { text: 'Предпочитаю избегать рисков', character: 'villager' }
+    ]
+  },
+  {
+    id: 10,
+    text: 'Что ты делаешь ночью в Minecraft?',
+    options: [
+      { text: 'Копаю шахты', character: 'steve' },
+      { text: 'Охочусь на мобов', character: 'alex' },
+      { text: 'Брожу в темноте', character: 'creeper' },
+      { text: 'Сижу дома в безопасности', character: 'villager' }
+    ]
+  },
+  {
+    id: 11,
+    text: 'Твоя любимая постройка?',
+    options: [
+      { text: 'Замок или крепость', character: 'steve' },
+      { text: 'Дом на дереве', character: 'alex' },
+      { text: 'Подземный бункер', character: 'creeper' },
+      { text: 'Уютный коттедж', character: 'villager' }
+    ]
+  },
+  {
+    id: 12,
+    text: 'Как ты работаешь в команде?',
+    options: [
+      { text: 'Беру на себя роль лидера', character: 'steve' },
+      { text: 'Разведываю и исследую', character: 'alex' },
+      { text: 'Действую независимо', character: 'creeper' },
+      { text: 'Поддерживаю всех', character: 'villager' }
+    ]
+  },
+  {
+    id: 13,
+    text: 'Что ты сделаешь, найдя алмазы?',
+    options: [
+      { text: 'Сделаю полный сет брони', character: 'steve' },
+      { text: 'Зачарую инструменты', character: 'alex' },
+      { text: 'Спрячу их', character: 'creeper' },
+      { text: 'Обменяю на что-то полезное', character: 'villager' }
+    ]
+  },
+  {
+    id: 14,
+    text: 'Твое отношение к крипперам?',
+    options: [
+      { text: 'Уничтожаю на месте', character: 'steve' },
+      { text: 'Обхожу стороной', character: 'alex' },
+      { text: 'Мои братья', character: 'creeper' },
+      { text: 'Боюсь их', character: 'villager' }
+    ]
+  },
+  {
+    id: 15,
+    text: 'Как ты украшаешь свой дом?',
+    options: [
+      { text: 'Функционально - сундуки и верстак', character: 'steve' },
+      { text: 'Экзотично - трофеи из путешествий', character: 'alex' },
+      { text: 'Минималистично', character: 'creeper' },
+      { text: 'Уютно - картины и цветы', character: 'villager' }
+    ]
+  },
+  {
+    id: 16,
+    text: 'Твоя стратегия в PvP?',
+    options: [
+      { text: 'Прямая атака в лоб', character: 'steve' },
+      { text: 'Тактика и маневры', character: 'alex' },
+      { text: 'Внезапность и взрыв', character: 'creeper' },
+      { text: 'Я не играю в PvP', character: 'villager' }
+    ]
+  },
+  {
+    id: 17,
+    text: 'Что ты выращиваешь на ферме?',
+    options: [
+      { text: 'Все необходимое для крафта', character: 'steve' },
+      { text: 'Редкие растения', character: 'alex' },
+      { text: 'Ничего не выращиваю', character: 'creeper' },
+      { text: 'Морковь и картошку', character: 'villager' }
+    ]
+  },
+  {
+    id: 18,
+    text: 'Как ты исследуешь пещеры?',
+    options: [
+      { text: 'Систематически, факелами помечаю путь', character: 'steve' },
+      { text: 'Иду вглубь, куда глаза глядят', character: 'alex' },
+      { text: 'Бесшумно и в темноте', character: 'creeper' },
+      { text: 'Я не хожу в пещеры', character: 'villager' }
+    ]
+  },
+  {
+    id: 19,
+    text: 'Твое любимое зелье?',
+    options: [
+      { text: 'Зелье силы', character: 'steve' },
+      { text: 'Зелье скорости', character: 'alex' },
+      { text: 'Зелье невидимости', character: 'creeper' },
+      { text: 'Зелье лечения', character: 'villager' }
+    ]
+  },
+  {
+    id: 20,
+    text: 'Что для тебя главное в Minecraft?',
+    options: [
+      { text: 'Достичь всех целей', character: 'steve' },
+      { text: 'Увидеть весь мир', character: 'alex' },
+      { text: 'Быть уникальным', character: 'creeper' },
+      { text: 'Играть с друзьями', character: 'villager' }
     ]
   }
 ];
@@ -120,6 +260,7 @@ const characters: Character[] = [
 ];
 
 export default function Index() {
+  const [started, setStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [showResult, setShowResult] = useState(false);
@@ -154,10 +295,16 @@ export default function Index() {
   };
 
   const restart = () => {
+    setStarted(false);
     setCurrentQuestion(0);
     setAnswers({});
     setShowResult(false);
     setResult(null);
+  };
+
+  const startTest = () => {
+    setStarted(true);
+    setCurrentQuestion(0);
   };
 
   if (showResult && result) {
@@ -212,43 +359,21 @@ export default function Index() {
                 Поделиться результатом
               </Button>
             </div>
-
-            <div className="pt-4 border-t-2 border-game-dark/10">
-              <div className="grid grid-cols-4 gap-3">
-                {characters.map((char) => (
-                  <div
-                    key={char.id}
-                    className={`p-3 rounded-lg border-2 ${
-                      char.id === result.id
-                        ? 'bg-game-yellow border-game-dark'
-                        : 'bg-white border-game-dark/20'
-                    }`}
-                  >
-                    <div className="text-3xl mb-1">{char.emoji}</div>
-                    <div className="text-xs font-body text-game-dark/70">{char.name}</div>
-                    <div className="text-lg font-game text-game-dark">
-                      {answers[char.id] || 0}/{questions.length}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </Card>
       </div>
     );
   }
 
-  if (currentQuestion === 0 && Object.keys(answers).length === 0) {
+  if (!started) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 flex items-center justify-center p-4">
         <Card className="max-w-2xl w-full bg-white/95 backdrop-blur-sm border-4 border-game-dark p-8">
           <div className="text-center space-y-6">
             <div className="flex justify-center gap-4 mb-4">
-              <div className="text-6xl animate-bounce">⛏️</div>
-              <div className="text-6xl animate-bounce" style={{ animationDelay: '0.1s' }}>💥</div>
-              <div className="text-6xl animate-bounce" style={{ animationDelay: '0.2s' }}>🗺️</div>
-              <div className="text-6xl animate-bounce" style={{ animationDelay: '0.3s' }}>🏘️</div>
+              <div className="text-6xl animate-bounce">🎮</div>
+              <div className="text-6xl animate-bounce" style={{ animationDelay: '0.1s' }}>⛏️</div>
+              <div className="text-6xl animate-bounce" style={{ animationDelay: '0.2s' }}>🎯</div>
             </div>
 
             <div>
@@ -269,7 +394,7 @@ export default function Index() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-2xl">🎭</span>
-                  {characters.length} уникальных персонажа
+                  Уникальные персонажи
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-2xl">✨</span>
@@ -283,21 +408,12 @@ export default function Index() {
             </div>
 
             <Button
-              onClick={() => setCurrentQuestion(0)}
+              onClick={startTest}
               className="w-full h-16 text-2xl font-game bg-gradient-to-r from-game-orange to-game-yellow hover:scale-105 transition-transform"
             >
               <Icon name="Play" size={32} className="mr-2" />
               Начать тест
             </Button>
-
-            <div className="grid grid-cols-4 gap-3 pt-4">
-              {characters.map((char) => (
-                <div key={char.id} className="text-center">
-                  <div className="text-4xl mb-1">{char.emoji}</div>
-                  <div className="text-xs font-body text-game-dark/70">{char.name}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </Card>
       </div>
@@ -342,10 +458,7 @@ export default function Index() {
                 onClick={() => handleAnswer(option.character)}
                 className="h-auto py-6 px-6 text-lg font-body bg-white hover:bg-gradient-to-r hover:from-game-cyan hover:to-game-yellow border-2 border-game-dark text-game-dark hover:text-white transition-all hover:scale-105"
               >
-                <div className="text-left">
-                  <div className="text-3xl mb-2">
-                    {characters.find(c => c.id === option.character)?.emoji}
-                  </div>
+                <div className="text-left w-full">
                   {option.text}
                 </div>
               </Button>
