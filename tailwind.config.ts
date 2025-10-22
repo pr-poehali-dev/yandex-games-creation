@@ -61,7 +61,17 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				game: {
+					orange: '#FF6B35',
+					yellow: '#F7931E',
+					cyan: '#4ECDC4',
+					dark: '#1A1A2E'
 				}
+			},
+			fontFamily: {
+				game: ['Fredoka One', 'cursive'],
+				body: ['Nunito', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +94,48 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fall': {
+					'0%': {
+						transform: 'translateY(-100px)',
+						opacity: '0'
+					},
+					'10%': {
+						opacity: '1'
+					},
+					'100%': {
+						transform: 'translateY(calc(100vh + 100px))',
+						opacity: '1'
+					}
+				},
+				'bounce-in': {
+					'0%': {
+						transform: 'scale(0)',
+						opacity: '0'
+					},
+					'50%': {
+						transform: 'scale(1.1)'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						opacity: '1'
+					}
+				},
+				'wiggle': {
+					'0%, 100%': {
+						transform: 'rotate(-3deg)'
+					},
+					'50%': {
+						transform: 'rotate(3deg)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fall': 'fall linear',
+				'bounce-in': 'bounce-in 0.5s ease-out',
+				'wiggle': 'wiggle 1s ease-in-out infinite'
 			}
 		}
 	},
