@@ -20,17 +20,26 @@ export default function Index() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const audio = new Audio('https://assets.mixkit.co/music/download/mixkit-halloween-spooky-dark-atmospheric-background-music-2822.mp3');
+    const audio = new Audio();
+    audio.src = 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_4a1f8a11ea.mp3';
     audio.loop = true;
-    audio.volume = 0.25;
-    audio.preload = 'auto';
+    audio.volume = 0.3;
+    audio.preload = 'metadata';
     
-    audio.addEventListener('canplaythrough', () => {
-      console.log('Аудио загружено и готово');
+    audio.addEventListener('loadeddata', () => {
+      console.log('✅ Аудио загружено, готово к воспроизведению');
     });
     
     audio.addEventListener('error', (e) => {
-      console.error('Ошибка загрузки аудио:', e);
+      console.error('❌ Ошибка загрузки аудио:', audio.error);
+    });
+    
+    audio.addEventListener('play', () => {
+      console.log('▶️ Музыка играет');
+    });
+    
+    audio.addEventListener('pause', () => {
+      console.log('⏸️ Музыка на паузе');
     });
     
     audioRef.current = audio;
@@ -45,18 +54,29 @@ export default function Index() {
   }, []);
 
   const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isMusicPlaying) {
-        audioRef.current.pause();
-        setIsMusicPlaying(false);
-      } else {
-        audioRef.current.play()
+    console.log('🔘 Нажата кнопка музыки, текущее состояние:', isMusicPlaying);
+    
+    if (!audioRef.current) {
+      console.error('❌ Аудио объект не найден');
+      return;
+    }
+
+    if (isMusicPlaying) {
+      console.log('⏸️ Останавливаю музыку');
+      audioRef.current.pause();
+      setIsMusicPlaying(false);
+    } else {
+      console.log('▶️ Пытаюсь включить музыку');
+      const playPromise = audioRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise
           .then(() => {
+            console.log('✅ Музыка успешно включена');
             setIsMusicPlaying(true);
-            console.log('Музыка включена');
           })
           .catch(err => {
-            console.error('Ошибка воспроизведения:', err);
+            console.error('❌ Ошибка воспроизведения:', err.name, err.message);
             setIsMusicPlaying(false);
           });
       }

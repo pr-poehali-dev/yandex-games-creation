@@ -122,7 +122,7 @@ export function ResultScreen({
                 }
               }}
               variant="outline"
-              className="w-full h-14 text-xl font-body border-2 border-orange-600 hover:bg-orange-950/30 text-orange-300 hover:text-orange-200"
+              className="w-full h-14 text-xl font-body border-2 border-orange-500 bg-white/95 hover:bg-orange-600 text-gray-900 hover:text-white transition-all"
             >
               <Icon name="Share2" size={24} className="mr-2" />
               Поделиться результатом
