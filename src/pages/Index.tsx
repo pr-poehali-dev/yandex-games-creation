@@ -14,19 +14,40 @@ export default function Index() {
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState<Character | null>(null);
   const [showStats, setShowStats] = useState(false);
-  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [showUnlockModal, setShowUnlockModal] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio('https://assets.mixkit.co/music/preview/mixkit-halloween-horror-582.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.4;
-    audioRef.current.play().catch(err => console.log('Audio autoplay blocked:', err));
+    const initAudio = async () => {
+      try {
+        audioRef.current = new Audio('https://assets.mixkit.co/music/download/mixkit-halloween-spooky-dark-atmospheric-background-music-2822.mp3');
+        audioRef.current.loop = true;
+        audioRef.current.volume = 0.25;
+        
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsMusicPlaying(true);
+            })
+            .catch((err) => {
+              console.log('Audio autoplay blocked:', err);
+              setIsMusicPlaying(false);
+            });
+        }
+      } catch (err) {
+        console.log('Audio init error:', err);
+        setIsMusicPlaying(false);
+      }
+    };
+    
+    initAudio();
     
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.src = '';
         audioRef.current = null;
       }
     };
@@ -94,15 +115,8 @@ export default function Index() {
     const character = characters.find(c => c.id === resultCharacter);
     const finalResult = character || characters[0];
     
-    const isUnlocked = localStorage.getItem(`unlocked_${resultCharacter}`) === 'true';
-    
-    if (finalResult.isLocked && !isUnlocked) {
-      setResult(finalResult);
-      setShowUnlockModal(true);
-    } else {
-      setResult(finalResult);
-      setShowResult(true);
-    }
+    setResult(finalResult);
+    setShowUnlockModal(true);
 
     const totalTests = parseInt(localStorage.getItem('totalTests') || '0') + 1;
     localStorage.setItem('totalTests', totalTests.toString());
@@ -112,20 +126,22 @@ export default function Index() {
   };
 
   const handleWatchAd = () => {
-    if (result) {
-      localStorage.setItem(`unlocked_${result.id}`, 'true');
+    const secretCharacter = characters.find(c => c.id === 'slenderman');
+    if (secretCharacter) {
+      localStorage.setItem('unlocked_slenderman', 'true');
+      setResult(secretCharacter);
       setShowUnlockModal(false);
       setShowResult(true);
       
       setTimeout(() => {
-        alert('🎃 Спасибо за просмотр! Персонаж разблокирован!');
+        alert('🎃 Спасибо за просмотр! Слендермен разблокирован!');
       }, 300);
     }
   };
 
   const handleCloseModal = () => {
     setShowUnlockModal(false);
-    restart();
+    setShowResult(true);
   };
 
   const restart = () => {

@@ -103,12 +103,22 @@ export function ResultScreen({
 
             <Button
               onClick={() => {
+                const shareData = {
+                  title: '🎃 Хэллоуин в Minecraft!',
+                  text: `Я прошел тест и получил: ${result.name}! ${result.emoji}`,
+                  url: window.location.href
+                };
+                
                 if (navigator.share) {
-                  navigator.share({
-                    title: '🎃 Хэллоуин в Minecraft!',
-                    text: `Я прошел тест и получил: ${result.name}! ${result.emoji}`,
-                    url: window.location.href
+                  navigator.share(shareData).catch(() => {
+                    const shareText = `${shareData.text}\n${shareData.url}`;
+                    navigator.clipboard.writeText(shareText);
+                    alert('📋 Ссылка скопирована в буфер обмена!');
                   });
+                } else {
+                  const shareText = `${shareData.text}\n${shareData.url}`;
+                  navigator.clipboard.writeText(shareText);
+                  alert('📋 Ссылка скопирована в буфер обмена!');
                 }
               }}
               variant="outline"
