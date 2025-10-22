@@ -1,346 +1,237 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 
-interface Ball {
+interface Question {
   id: number;
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  radius: number;
-  color: string;
-  points: number;
+  text: string;
+  options: {
+    text: string;
+    character: string;
+  }[];
 }
 
-interface Particle {
-  id: number;
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
+interface Character {
+  id: string;
+  name: string;
+  emoji: string;
+  description: string;
+  traits: string[];
   color: string;
 }
 
-type GameState = 'menu' | 'playing' | 'paused' | 'gameover';
+const questions: Question[] = [
+  {
+    id: 1,
+    text: 'Как ты проводишь свободное время?',
+    options: [
+      { text: 'Строю и создаю что-то новое', character: 'steve' },
+      { text: 'Исследую новые места', character: 'alex' },
+      { text: 'Охраняю свою территорию', character: 'creeper' },
+      { text: 'Помогаю друзьям', character: 'villager' }
+    ]
+  },
+  {
+    id: 2,
+    text: 'Что для тебя важнее всего?',
+    options: [
+      { text: 'Достижения и результаты', character: 'steve' },
+      { text: 'Приключения и открытия', character: 'alex' },
+      { text: 'Защита и безопасность', character: 'creeper' },
+      { text: 'Общение и помощь другим', character: 'villager' }
+    ]
+  },
+  {
+    id: 3,
+    text: 'Как ты решаешь проблемы?',
+    options: [
+      { text: 'Планирую и действую методично', character: 'steve' },
+      { text: 'Ищу нестандартные решения', character: 'alex' },
+      { text: 'Использую радикальные методы', character: 'creeper' },
+      { text: 'Советуюсь с другими', character: 'villager' }
+    ]
+  },
+  {
+    id: 4,
+    text: 'Твой идеальный день?',
+    options: [
+      { text: 'Работать над большим проектом', character: 'steve' },
+      { text: 'Открыть новое место', character: 'alex' },
+      { text: 'Быть начеку и готовым к действию', character: 'creeper' },
+      { text: 'Провести время с друзьями', character: 'villager' }
+    ]
+  },
+  {
+    id: 5,
+    text: 'Как тебя видят другие?',
+    options: [
+      { text: 'Надежный и трудолюбивый', character: 'steve' },
+      { text: 'Смелый и любопытный', character: 'alex' },
+      { text: 'Непредсказуемый и опасный', character: 'creeper' },
+      { text: 'Дружелюбный и полезный', character: 'villager' }
+    ]
+  },
+  {
+    id: 6,
+    text: 'Твоя любимая активность?',
+    options: [
+      { text: 'Добывать ресурсы', character: 'steve' },
+      { text: 'Исследовать биомы', character: 'alex' },
+      { text: 'Подкрадываться незаметно', character: 'creeper' },
+      { text: 'Торговать и обмениваться', character: 'villager' }
+    ]
+  }
+];
+
+const characters: Character[] = [
+  {
+    id: 'steve',
+    name: 'Стив',
+    emoji: '⛏️',
+    description: 'Ты классический герой Minecraft! Трудолюбивый, целеустремленный и всегда готовый к новым вызовам.',
+    traits: ['Трудолюбивый', 'Целеустремленный', 'Надежный', 'Практичный'],
+    color: 'from-blue-500 to-cyan-500'
+  },
+  {
+    id: 'alex',
+    name: 'Алекс',
+    emoji: '🗺️',
+    description: 'Ты искатель приключений! Любишь исследовать мир, открывать новое и не боишься рисковать.',
+    traits: ['Смелый', 'Любознательный', 'Авантюрный', 'Креативный'],
+    color: 'from-orange-500 to-red-500'
+  },
+  {
+    id: 'creeper',
+    name: 'Крипер',
+    emoji: '💥',
+    description: 'Ты загадочный и непредсказуемый! Не любишь шаблонов и всегда готов к неожиданным решениям.',
+    traits: ['Непредсказуемый', 'Решительный', 'Взрывной', 'Уникальный'],
+    color: 'from-green-500 to-emerald-600'
+  },
+  {
+    id: 'villager',
+    name: 'Житель деревни',
+    emoji: '🏘️',
+    description: 'Ты душа компании! Общительный, дружелюбный и всегда готов помочь другим.',
+    traits: ['Дружелюбный', 'Общительный', 'Щедрый', 'Миролюбивый'],
+    color: 'from-purple-500 to-pink-500'
+  }
+];
 
 export default function Index() {
-  const [gameState, setGameState] = useState<GameState>('menu');
-  const [score, setScore] = useState(0);
-  const [bestScore, setBestScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(60);
-  const [level, setLevel] = useState(1);
-  const [balls, setBalls] = useState<Ball[]>([]);
-  const [particles, setParticles] = useState<Particle[]>([]);
-  const [playerY, setPlayerY] = useState(50);
-  const gameAreaRef = useRef<HTMLDivElement>(null);
-  const ballIdRef = useRef(0);
-  const particleIdRef = useRef(0);
-  const [yandexSDK, setYandexSDK] = useState<any>(null);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [showResult, setShowResult] = useState(false);
+  const [result, setResult] = useState<Character | null>(null);
 
-  useEffect(() => {
-    const initYandexSDK = async () => {
-      if (typeof window !== 'undefined' && (window as any).YaGames) {
-        try {
-          const sdk = await (window as any).YaGames.init();
-          setYandexSDK(sdk);
-          
-          const player = await sdk.getPlayer();
-          const savedScore = await player.getData(['bestScore']);
-          if (savedScore.bestScore) {
-            setBestScore(savedScore.bestScore);
-          }
-        } catch (error) {
-          console.log('Yandex SDK not available, running in standalone mode');
-        }
+  const handleAnswer = (character: string) => {
+    const newAnswers = { ...answers };
+    newAnswers[character] = (newAnswers[character] || 0) + 1;
+    setAnswers(newAnswers);
+
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      calculateResult(newAnswers);
+    }
+  };
+
+  const calculateResult = (finalAnswers: Record<string, number>) => {
+    let maxCount = 0;
+    let resultCharacter = 'steve';
+
+    Object.entries(finalAnswers).forEach(([char, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        resultCharacter = char;
       }
-    };
+    });
 
-    initYandexSDK();
-  }, []);
-
-  useEffect(() => {
-    if (gameState !== 'playing') return;
-
-    const spawnInterval = setInterval(() => {
-      const colors = ['#FF6B35', '#F7931E', '#4ECDC4', '#FFE66D', '#A8E6CF'];
-      const newBall: Ball = {
-        id: ballIdRef.current++,
-        x: 95,
-        y: Math.random() * 90 + 5,
-        vx: -(2 + level * 0.3),
-        vy: (Math.random() - 0.5) * 2,
-        radius: 20 + Math.random() * 20,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        points: 10
-      };
-      setBalls(prev => [...prev, newBall]);
-    }, 1200 - level * 80);
-
-    return () => clearInterval(spawnInterval);
-  }, [gameState, level]);
-
-  useEffect(() => {
-    if (gameState !== 'playing') return;
-
-    const gameLoop = setInterval(() => {
-      setBalls(prev => {
-        return prev
-          .map(ball => ({
-            ...ball,
-            x: ball.x + ball.vx,
-            y: ball.y + ball.vy
-          }))
-          .filter(ball => {
-            if (ball.x < 15 && Math.abs(ball.y - playerY) < 15) {
-              createParticles(ball.x, ball.y, 20, ball.color);
-              setScore(s => {
-                const newScore = s + ball.points;
-                if (newScore > bestScore) {
-                  setBestScore(newScore);
-                  saveScoreToYandex(newScore);
-                }
-                return newScore;
-              });
-              return false;
-            }
-            return ball.x > -5;
-          });
-      });
-
-      setParticles(prev =>
-        prev
-          .map(p => ({
-            ...p,
-            x: p.x + p.vx,
-            y: p.y + p.vy,
-            vy: p.vy + 0.2,
-            life: p.life - 1
-          }))
-          .filter(p => p.life > 0)
-      );
-    }, 1000 / 60);
-
-    return () => clearInterval(gameLoop);
-  }, [gameState, playerY, bestScore]);
-
-  useEffect(() => {
-    if (gameState !== 'playing') return;
-
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          endGame();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [gameState]);
-
-  useEffect(() => {
-    if (score > 0 && score % 100 === 0) {
-      setLevel(l => l + 1);
-      showAd();
-    }
-  }, [score]);
-
-  const saveScoreToYandex = async (newScore: number) => {
-    if (yandexSDK) {
-      try {
-        const player = await yandexSDK.getPlayer();
-        await player.setData({ bestScore: newScore });
-        
-        if (yandexSDK.getLeaderboards) {
-          const leaderboard = await yandexSDK.getLeaderboards();
-          await leaderboard.setLeaderboardScore('best_score', newScore);
-        }
-      } catch (error) {
-        console.log('Failed to save score to Yandex');
-      }
-    }
+    const character = characters.find(c => c.id === resultCharacter);
+    setResult(character || characters[0]);
+    setShowResult(true);
   };
 
-  const showAd = () => {
-    if (yandexSDK && yandexSDK.adv) {
-      yandexSDK.adv.showFullscreenAdv({
-        callbacks: {
-          onClose: () => setGameState('playing'),
-          onError: () => setGameState('playing')
-        }
-      });
-      setGameState('paused');
-    }
+  const restart = () => {
+    setCurrentQuestion(0);
+    setAnswers({});
+    setShowResult(false);
+    setResult(null);
   };
 
-  const createParticles = (x: number, y: number, count: number, color: string) => {
-    const newParticles: Particle[] = [];
-    for (let i = 0; i < count; i++) {
-      newParticles.push({
-        id: particleIdRef.current++,
-        x,
-        y,
-        vx: (Math.random() - 0.5) * 8,
-        vy: (Math.random() - 0.5) * 8,
-        life: 30 + Math.random() * 20,
-        color
-      });
-    }
-    setParticles(prev => [...prev, ...newParticles]);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (gameState !== 'playing' || !gameAreaRef.current) return;
-    const rect = gameAreaRef.current.getBoundingClientRect();
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setPlayerY(Math.max(5, Math.min(95, y)));
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (gameState !== 'playing' || !gameAreaRef.current) return;
-    const rect = gameAreaRef.current.getBoundingClientRect();
-    const touch = e.touches[0];
-    const y = ((touch.clientY - rect.top) / rect.height) * 100;
-    setPlayerY(Math.max(5, Math.min(95, y)));
-  };
-
-  const startGame = () => {
-    setGameState('playing');
-    setScore(0);
-    setTimeLeft(60);
-    setLevel(1);
-    setBalls([]);
-    setParticles([]);
-    setPlayerY(50);
-  };
-
-  const endGame = () => {
-    setGameState('gameover');
-    showAd();
-  };
-
-  const pauseGame = () => {
-    setGameState('paused');
-  };
-
-  const resumeGame = () => {
-    setGameState('playing');
-  };
-
-  const showLeaderboard = async () => {
-    if (yandexSDK && yandexSDK.getLeaderboards) {
-      try {
-        const leaderboard = await yandexSDK.getLeaderboards();
-        await leaderboard.getLeaderboardEntries('best_score', { quantityTop: 10 });
-      } catch (error) {
-        console.log('Leaderboard not available');
-      }
-    }
-  };
-
-  if (gameState === 'menu') {
+  if (showResult && result) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-game-cyan via-game-yellow to-game-orange flex items-center justify-center p-4">
-        <Card className="max-w-md w-full bg-white/95 backdrop-blur-sm border-4 border-game-dark p-8">
+      <div className={`min-h-screen bg-gradient-to-br ${result.color} flex items-center justify-center p-4`}>
+        <Card className="max-w-2xl w-full bg-white/95 backdrop-blur-sm border-4 border-game-dark p-8">
           <div className="text-center space-y-6">
+            <div className="text-8xl mb-4 animate-bounce-in">{result.emoji}</div>
+            
             <div>
-              <h1 className="text-6xl font-game text-game-dark mb-2">ЛОВЕЦ</h1>
-              <p className="text-xl font-body text-game-dark/80">Лови шары и набирай очки!</p>
+              <h1 className="text-5xl font-game text-game-dark mb-2">Ты - {result.name}!</h1>
+              <p className="text-xl font-body text-game-dark/80">{result.description}</p>
             </div>
 
-            {bestScore > 0 && (
-              <div className="bg-gradient-to-r from-game-orange to-game-yellow text-white px-6 py-4 rounded-xl">
-                <div className="text-sm font-body">Лучший результат</div>
-                <div className="text-4xl font-game">{bestScore}</div>
-              </div>
-            )}
-
-            <div className="space-y-3">
-              <Button
-                onClick={startGame}
-                className="w-full h-16 text-2xl font-game bg-gradient-to-r from-game-orange to-game-yellow hover:scale-105 transition-transform"
-              >
-                <Icon name="Play" size={32} className="mr-2" />
-                Играть
-              </Button>
-
-              <Button
-                onClick={showLeaderboard}
-                variant="outline"
-                className="w-full h-14 text-xl font-body border-2 border-game-dark hover:bg-game-cyan hover:text-white"
-              >
-                <Icon name="Trophy" size={24} className="mr-2" />
-                Рекорды
-              </Button>
-            </div>
-
-            <div className="bg-game-dark/10 rounded-lg p-4 text-left">
-              <h3 className="font-game text-game-dark mb-2">Как играть:</h3>
-              <ul className="space-y-1 font-body text-sm text-game-dark/80">
-                <li>• Управляй платформой мышкой или пальцем</li>
-                <li>• Лови летящие шары</li>
-                <li>• Каждый пойманный шар = 10 очков</li>
-                <li>• С каждым уровнем игра ускоряется</li>
-              </ul>
-            </div>
-          </div>
-        </Card>
-      </div>
-    );
-  }
-
-  if (gameState === 'gameover') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full bg-white/95 backdrop-blur-sm border-4 border-game-dark p-8">
-          <div className="text-center space-y-6">
-            <h2 className="text-5xl font-game text-game-dark">ИГРА ОКОНЧЕНА</h2>
-
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-game-orange to-game-yellow text-white px-6 py-4 rounded-xl">
-                <div className="text-sm font-body">Твой результат</div>
-                <div className="text-5xl font-game">{score}</div>
-              </div>
-
-              {score === bestScore && score > 0 && (
-                <div className="bg-game-cyan text-white px-6 py-3 rounded-xl animate-bounce-in">
-                  <div className="text-xl font-game">🏆 НОВЫЙ РЕКОРД! 🏆</div>
-                </div>
-              )}
-
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div className="bg-white border-2 border-game-dark rounded-lg p-3">
-                  <div className="text-sm font-body text-game-dark/70">Уровень</div>
-                  <div className="text-2xl font-game text-game-dark">{level}</div>
-                </div>
-                <div className="bg-white border-2 border-game-dark rounded-lg p-3">
-                  <div className="text-sm font-body text-game-dark/70">Рекорд</div>
-                  <div className="text-2xl font-game text-game-dark">{bestScore}</div>
-                </div>
+            <div className="bg-game-dark/5 rounded-xl p-6">
+              <h3 className="text-2xl font-game text-game-dark mb-4">Твои черты:</h3>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {result.traits.map((trait, index) => (
+                  <div
+                    key={index}
+                    className="bg-white border-2 border-game-dark px-4 py-2 rounded-full font-body text-game-dark"
+                  >
+                    ✨ {trait}
+                  </div>
+                ))}
               </div>
             </div>
 
             <div className="space-y-3">
               <Button
-                onClick={startGame}
+                onClick={restart}
                 className="w-full h-16 text-2xl font-game bg-gradient-to-r from-game-orange to-game-yellow hover:scale-105 transition-transform"
               >
                 <Icon name="RotateCcw" size={28} className="mr-2" />
-                Играть еще
+                Пройти еще раз
               </Button>
 
               <Button
-                onClick={() => setGameState('menu')}
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: 'Какой ты персонаж Minecraft?',
+                      text: `Я прошел тест и получил: ${result.name}! ${result.emoji}`,
+                      url: window.location.href
+                    });
+                  }
+                }}
                 variant="outline"
-                className="w-full h-14 text-xl font-body border-2 border-game-dark"
+                className="w-full h-14 text-xl font-body border-2 border-game-dark hover:bg-white"
               >
-                <Icon name="Home" size={24} className="mr-2" />
-                В меню
+                <Icon name="Share2" size={24} className="mr-2" />
+                Поделиться результатом
               </Button>
+            </div>
+
+            <div className="pt-4 border-t-2 border-game-dark/10">
+              <div className="grid grid-cols-4 gap-3">
+                {characters.map((char) => (
+                  <div
+                    key={char.id}
+                    className={`p-3 rounded-lg border-2 ${
+                      char.id === result.id
+                        ? 'bg-game-yellow border-game-dark'
+                        : 'bg-white border-game-dark/20'
+                    }`}
+                  >
+                    <div className="text-3xl mb-1">{char.emoji}</div>
+                    <div className="text-xs font-body text-game-dark/70">{char.name}</div>
+                    <div className="text-lg font-game text-game-dark">
+                      {answers[char.id] || 0}/{questions.length}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </Card>
@@ -348,111 +239,129 @@ export default function Index() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex gap-4">
-            <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-game-dark">
-              <span className="text-2xl font-game text-game-dark">🎯 {score}</span>
+  if (currentQuestion === 0 && Object.keys(answers).length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 flex items-center justify-center p-4">
+        <Card className="max-w-2xl w-full bg-white/95 backdrop-blur-sm border-4 border-game-dark p-8">
+          <div className="text-center space-y-6">
+            <div className="flex justify-center gap-4 mb-4">
+              <div className="text-6xl animate-bounce">⛏️</div>
+              <div className="text-6xl animate-bounce" style={{ animationDelay: '0.1s' }}>💥</div>
+              <div className="text-6xl animate-bounce" style={{ animationDelay: '0.2s' }}>🗺️</div>
+              <div className="text-6xl animate-bounce" style={{ animationDelay: '0.3s' }}>🏘️</div>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-game-dark">
-              <span className="text-2xl font-game text-game-dark">⏱️ {timeLeft}s</span>
+
+            <div>
+              <h1 className="text-5xl font-game text-game-dark mb-3">
+                Какой ты персонаж Minecraft?
+              </h1>
+              <p className="text-xl font-body text-game-dark/80">
+                Пройди тест и узнай, кто ты в мире Майнкрафт!
+              </p>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-game-dark">
-              <span className="text-2xl font-game text-game-dark">📊 LVL {level}</span>
+
+            <div className="bg-game-dark/5 rounded-xl p-6 text-left">
+              <h3 className="text-xl font-game text-game-dark mb-3">Тебя ждет:</h3>
+              <ul className="space-y-2 font-body text-game-dark/80">
+                <li className="flex items-center gap-2">
+                  <span className="text-2xl">📝</span>
+                  {questions.length} интересных вопросов
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-2xl">🎭</span>
+                  {characters.length} уникальных персонажа
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-2xl">✨</span>
+                  Подробное описание твоего характера
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-2xl">📤</span>
+                  Возможность поделиться результатом
+                </li>
+              </ul>
             </div>
-          </div>
 
-          <Button
-            onClick={pauseGame}
-            variant="outline"
-            size="lg"
-            className="bg-white/90 backdrop-blur-sm border-2 border-game-dark"
-          >
-            <Icon name="Pause" size={24} />
-          </Button>
-        </div>
-
-        <Card className="bg-white/95 backdrop-blur-sm border-4 border-game-dark overflow-hidden">
-          <div
-            ref={gameAreaRef}
-            className="relative bg-gradient-to-b from-sky-200 to-blue-100 aspect-[4/3] cursor-none"
-            onMouseMove={handleMouseMove}
-            onTouchMove={handleTouchMove}
-          >
-            {balls.map(ball => (
-              <div
-                key={ball.id}
-                className="absolute rounded-full shadow-lg transition-none pointer-events-none"
-                style={{
-                  left: `${ball.x}%`,
-                  top: `${ball.y}%`,
-                  width: `${ball.radius * 2}px`,
-                  height: `${ball.radius * 2}px`,
-                  backgroundColor: ball.color,
-                  transform: 'translate(-50%, -50%)',
-                  border: '3px solid rgba(255,255,255,0.5)'
-                }}
-              />
-            ))}
-
-            {particles.map(p => (
-              <div
-                key={p.id}
-                className="absolute w-2 h-2 rounded-full pointer-events-none"
-                style={{
-                  left: `${p.x}%`,
-                  top: `${p.y}%`,
-                  backgroundColor: p.color,
-                  opacity: p.life / 50
-                }}
-              />
-            ))}
-
-            <div
-              className="absolute left-0 w-12 h-24 bg-gradient-to-r from-game-orange to-game-yellow rounded-r-full shadow-xl border-4 border-white transition-none"
-              style={{
-                top: `${playerY}%`,
-                transform: 'translateY(-50%)'
-              }}
+            <Button
+              onClick={() => setCurrentQuestion(0)}
+              className="w-full h-16 text-2xl font-game bg-gradient-to-r from-game-orange to-game-yellow hover:scale-105 transition-transform"
             >
-              <div className="absolute inset-0 flex items-center justify-center text-2xl">
-                🎯
-              </div>
+              <Icon name="Play" size={32} className="mr-2" />
+              Начать тест
+            </Button>
+
+            <div className="grid grid-cols-4 gap-3 pt-4">
+              {characters.map((char) => (
+                <div key={char.id} className="text-center">
+                  <div className="text-4xl mb-1">{char.emoji}</div>
+                  <div className="text-xs font-body text-game-dark/70">{char.name}</div>
+                </div>
+              ))}
             </div>
           </div>
         </Card>
-
-        {gameState === 'paused' && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <Card className="max-w-sm w-full bg-white/95 border-4 border-game-dark p-8">
-              <div className="text-center space-y-6">
-                <h2 className="text-4xl font-game text-game-dark">ПАУЗА</h2>
-                
-                <div className="space-y-3">
-                  <Button
-                    onClick={resumeGame}
-                    className="w-full h-16 text-2xl font-game bg-gradient-to-r from-game-orange to-game-yellow"
-                  >
-                    <Icon name="Play" size={28} className="mr-2" />
-                    Продолжить
-                  </Button>
-
-                  <Button
-                    onClick={() => setGameState('menu')}
-                    variant="outline"
-                    className="w-full h-14 text-xl font-body border-2 border-game-dark"
-                  >
-                    <Icon name="Home" size={24} className="mr-2" />
-                    В меню
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div>
-        )}
       </div>
+    );
+  }
+
+  const question = questions[currentQuestion];
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+      <Card className="max-w-2xl w-full bg-white/95 backdrop-blur-sm border-4 border-game-dark p-8">
+        <div className="space-y-6">
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-lg font-game text-game-dark">
+                Вопрос {currentQuestion + 1} из {questions.length}
+              </span>
+              <span className="text-lg font-game text-game-dark">
+                {Math.round(progress)}%
+              </span>
+            </div>
+            
+            <div className="w-full bg-game-dark/20 rounded-full h-3 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-game-orange to-game-yellow transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="text-center py-6">
+            <h2 className="text-3xl font-game text-game-dark mb-2">
+              {question.text}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {question.options.map((option, index) => (
+              <Button
+                key={index}
+                onClick={() => handleAnswer(option.character)}
+                className="h-auto py-6 px-6 text-lg font-body bg-white hover:bg-gradient-to-r hover:from-game-cyan hover:to-game-yellow border-2 border-game-dark text-game-dark hover:text-white transition-all hover:scale-105"
+              >
+                <div className="text-left">
+                  <div className="text-3xl mb-2">
+                    {characters.find(c => c.id === option.character)?.emoji}
+                  </div>
+                  {option.text}
+                </div>
+              </Button>
+            ))}
+          </div>
+
+          <Button
+            onClick={restart}
+            variant="outline"
+            className="w-full border-2 border-game-dark hover:bg-game-dark/10"
+          >
+            <Icon name="Home" size={20} className="mr-2" />
+            Начать заново
+          </Button>
+        </div>
+      </Card>
     </div>
   );
 }
