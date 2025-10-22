@@ -40,8 +40,14 @@ export default function Index() {
         setIsMusicPlaying(false);
       } else {
         audioRef.current.play()
-          .then(() => setIsMusicPlaying(true))
-          .catch(err => console.log('Audio play error:', err));
+          .then(() => {
+            setIsMusicPlaying(true);
+            console.log('Музыка включена');
+          })
+          .catch(err => {
+            console.error('Ошибка воспроизведения:', err);
+            setIsMusicPlaying(false);
+          });
       }
     }
   };
@@ -142,16 +148,6 @@ export default function Index() {
     setStarted(true);
     setCurrentQuestion(0);
     setQuestionHistory([]);
-    
-    setTimeout(() => {
-      if (audioRef.current && !isMusicPlaying) {
-        audioRef.current.play()
-          .then(() => setIsMusicPlaying(true))
-          .catch(err => {
-            console.log('Музыка будет доступна после взаимодействия:', err);
-          });
-      }
-    }, 100);
   };
 
   if (showUnlockModal && actualResult) {
