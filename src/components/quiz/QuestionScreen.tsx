@@ -2,18 +2,15 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { Question } from './types';
-import { MusicButton } from './MusicButton';
 
 interface QuestionScreenProps {
   question: Question;
   currentQuestion: number;
   totalQuestions: number;
-  isMusicPlaying: boolean;
   onAnswer: (character: string) => void;
   onPrevious: () => void;
   onNext: () => void;
   onRestart: () => void;
-  onToggleMusic: () => void;
   canGoPrevious: boolean;
   canGoNext: boolean;
 }
@@ -22,12 +19,10 @@ export function QuestionScreen({
   question, 
   currentQuestion, 
   totalQuestions, 
-  isMusicPlaying,
   onAnswer, 
   onPrevious,
   onNext,
   onRestart,
-  onToggleMusic,
   canGoPrevious,
   canGoNext
 }: QuestionScreenProps) {
@@ -40,10 +35,6 @@ export function QuestionScreen({
         <div className="absolute bottom-10 left-10 text-4xl animate-bounce">🦇</div>
       </div>
       
-      <div className="fixed top-4 right-4 z-50">
-        <MusicButton isMusicPlaying={isMusicPlaying} onToggle={onToggleMusic} />
-      </div>
-
       <Card className="max-w-2xl w-full bg-black/80 backdrop-blur-sm border-4 border-orange-600 p-8 shadow-2xl shadow-orange-600/40 relative z-10">
         <div className="space-y-6">
           <div className="space-y-3">

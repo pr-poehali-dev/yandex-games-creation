@@ -1,16 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
-import { MusicButton } from './MusicButton';
 
 interface StartScreenProps {
   questionsCount: number;
-  isMusicPlaying: boolean;
   onStart: () => void;
-  onToggleMusic: () => void;
 }
 
-export function StartScreen({ questionsCount, isMusicPlaying, onStart, onToggleMusic }: StartScreenProps) {
+export function StartScreen({ questionsCount, onStart }: StartScreenProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-900 via-purple-900 to-black flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20">
@@ -20,10 +17,6 @@ export function StartScreen({ questionsCount, isMusicPlaying, onStart, onToggleM
         <div className="absolute bottom-10 right-10 text-6xl animate-pulse" style={{ animationDelay: '1s' }}>🕷️</div>
       </div>
       
-      <div className="fixed top-4 right-4 z-50">
-        <MusicButton isMusicPlaying={isMusicPlaying} onToggle={onToggleMusic} />
-      </div>
-
       <Card className="max-w-2xl w-full bg-black/80 backdrop-blur-sm border-4 border-orange-500 p-8 shadow-2xl shadow-orange-500/50 relative z-10">
         <div className="text-center space-y-6">
           <div className="flex justify-center gap-4 mb-4">

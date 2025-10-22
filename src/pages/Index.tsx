@@ -14,74 +14,10 @@ export default function Index() {
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState<Character | null>(null);
   const [showStats, setShowStats] = useState(false);
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [actualResult, setActualResult] = useState<Character | null>(null);
   const [showUnlockModal, setShowUnlockModal] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    const audio = new Audio();
-    audio.src = 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_4a1f8a11ea.mp3';
-    audio.loop = true;
-    audio.volume = 0.3;
-    audio.preload = 'metadata';
-    
-    audio.addEventListener('loadeddata', () => {
-      console.log('✅ Аудио загружено, готово к воспроизведению');
-    });
-    
-    audio.addEventListener('error', (e) => {
-      console.error('❌ Ошибка загрузки аудио:', audio.error);
-    });
-    
-    audio.addEventListener('play', () => {
-      console.log('▶️ Музыка играет');
-    });
-    
-    audio.addEventListener('pause', () => {
-      console.log('⏸️ Музыка на паузе');
-    });
-    
-    audioRef.current = audio;
-    
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = '';
-        audioRef.current = null;
-      }
-    };
-  }, []);
 
-  const toggleMusic = () => {
-    console.log('🔘 Нажата кнопка музыки, текущее состояние:', isMusicPlaying);
-    
-    if (!audioRef.current) {
-      console.error('❌ Аудио объект не найден');
-      return;
-    }
-
-    if (isMusicPlaying) {
-      console.log('⏸️ Останавливаю музыку');
-      audioRef.current.pause();
-      setIsMusicPlaying(false);
-    } else {
-      console.log('▶️ Пытаюсь включить музыку');
-      const playPromise = audioRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log('✅ Музыка успешно включена');
-            setIsMusicPlaying(true);
-          })
-          .catch(err => {
-            console.error('❌ Ошибка воспроизведения:', err.name, err.message);
-            setIsMusicPlaying(false);
-          });
-      }
-    }
-  };
 
   const handleAnswer = (character: string) => {
     const newAnswers = { ...answers };
@@ -202,7 +138,6 @@ export default function Index() {
       <ResultScreen
         result={result}
         showStats={showStats}
-        isMusicPlaying={isMusicPlaying}
         totalTests={totalTests}
         steveCount={steveCount}
         alexCount={alexCount}
@@ -210,7 +145,6 @@ export default function Index() {
         villagerCount={villagerCount}
         onRestart={restart}
         onToggleStats={() => setShowStats(!showStats)}
-        onToggleMusic={toggleMusic}
       />
     );
   }
@@ -219,9 +153,7 @@ export default function Index() {
     return (
       <StartScreen
         questionsCount={questions.length}
-        isMusicPlaying={isMusicPlaying}
         onStart={startTest}
-        onToggleMusic={toggleMusic}
       />
     );
   }
@@ -233,12 +165,10 @@ export default function Index() {
       question={question}
       currentQuestion={currentQuestion}
       totalQuestions={questions.length}
-      isMusicPlaying={isMusicPlaying}
       onAnswer={handleAnswer}
       onPrevious={handlePrevious}
       onNext={handleNext}
       onRestart={restart}
-      onToggleMusic={toggleMusic}
       canGoPrevious={currentQuestion > 0}
       canGoNext={questionHistory.length > currentQuestion}
     />

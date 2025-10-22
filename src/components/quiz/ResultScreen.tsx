@@ -3,12 +3,10 @@ import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { Character } from './types';
 import { StatsPanel } from './StatsPanel';
-import { MusicButton } from './MusicButton';
 
 interface ResultScreenProps {
   result: Character;
   showStats: boolean;
-  isMusicPlaying: boolean;
   totalTests: number;
   steveCount: number;
   alexCount: number;
@@ -16,21 +14,18 @@ interface ResultScreenProps {
   villagerCount: number;
   onRestart: () => void;
   onToggleStats: () => void;
-  onToggleMusic: () => void;
 }
 
 export function ResultScreen({ 
   result, 
   showStats, 
-  isMusicPlaying,
   totalTests, 
   steveCount, 
   alexCount, 
   creeperCount, 
   villagerCount,
   onRestart,
-  onToggleStats,
-  onToggleMusic
+  onToggleStats
 }: ResultScreenProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-900 via-purple-900 to-black flex items-center justify-center p-4 relative overflow-hidden">
@@ -41,7 +36,7 @@ export function ResultScreen({
         <div className="absolute bottom-40 right-20 text-4xl animate-pulse" style={{ animationDelay: '1s' }}>🕷️</div>
       </div>
 
-      <div className="fixed top-4 right-4 z-50 flex gap-2">
+      <div className="fixed top-4 right-4 z-50">
         <Button
           onClick={onToggleStats}
           variant="outline"
@@ -50,7 +45,6 @@ export function ResultScreen({
         >
           <Icon name="BarChart3" size={24} />
         </Button>
-        <MusicButton isMusicPlaying={isMusicPlaying} onToggle={onToggleMusic} />
       </div>
 
       {showStats && (
