@@ -2,6 +2,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 
+declare global {
+  interface Window {
+    ysdk?: any;
+  }
+}
+
 interface UnlockModalProps {
   characterName: string;
   onWatchAd: () => void;
@@ -9,6 +15,33 @@ interface UnlockModalProps {
 }
 
 export function UnlockModal({ characterName, onWatchAd, onClose }: UnlockModalProps) {
+  const handleWatchAd = async () => {
+    try {
+      if (window.ysdk?.adv) {
+        await window.ysdk.adv.showFullscreenAdv({
+          callbacks: {
+            onClose: (wasShown: boolean) => {
+              console.log('Реклама закрыта, показана:', wasShown);
+              if (wasShown) {
+                onWatchAd();
+              }
+            },
+            onError: (error: any) => {
+              console.error('Ошибка показа рекламы:', error);
+              onWatchAd();
+            }
+          }
+        });
+      } else {
+        console.log('SDK не найден, эмуляция просмотра рекламы');
+        onWatchAd();
+      }
+    } catch (error) {
+      console.error('Ошибка при показе рекламы:', error);
+      onWatchAd();
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
       <Card className="max-w-md w-full bg-gradient-to-br from-orange-900 via-red-900 to-black border-4 border-orange-500 p-8 shadow-2xl shadow-orange-500/60 animate-fade-in">
@@ -33,7 +66,7 @@ export function UnlockModal({ characterName, onWatchAd, onClose }: UnlockModalPr
 
           <div className="space-y-3">
             <Button
-              onClick={onWatchAd}
+              onClick={handleWatchAd}
               className="w-full h-16 text-lg font-game bg-gradient-to-r from-orange-600 via-red-600 to-orange-600 hover:scale-105 transition-transform shadow-lg shadow-orange-600/60 animate-pulse flex items-center justify-center"
             >
               <Icon name="Gift" size={24} className="mr-2 flex-shrink-0" />
