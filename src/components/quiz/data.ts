@@ -8,8 +8,7 @@ export const questions: Question[] = [
       { text: 'Строю укрепления', character: 'steve' },
       { text: 'Исследую темноту', character: 'alex' },
       { text: 'Скрываюсь в тенях', character: 'creeper' },
-      { text: 'Прячусь дома', character: 'villager' },
-      { text: 'Наблюдаю издалека', character: 'slenderman' }
+      { text: 'Прячусь дома', character: 'villager' }
     ]
   },
   {
@@ -19,8 +18,7 @@ export const questions: Question[] = [
       { text: 'Ничего особенного', character: 'steve' },
       { text: 'Неизведанное', character: 'alex' },
       { text: 'Одиночество', character: 'creeper' },
-      { text: 'Монстры', character: 'villager' },
-      { text: 'Сам себя', character: 'slenderman' }
+      { text: 'Монстры', character: 'villager' }
     ]
   },
   {
@@ -30,8 +28,7 @@ export const questions: Question[] = [
       { text: 'Прямо и честно', character: 'steve' },
       { text: 'Креативно', character: 'alex' },
       { text: 'Взрывоопасно', character: 'creeper' },
-      { text: 'Помогают друзья', character: 'villager' },
-      { text: 'Молча и медленно', character: 'slenderman' }
+      { text: 'Помогают друзья', character: 'villager' }
     ]
   },
   {
@@ -41,8 +38,7 @@ export const questions: Question[] = [
       { text: 'Горы', character: 'steve' },
       { text: 'Джунгли', character: 'alex' },
       { text: 'Темный лес', character: 'creeper' },
-      { text: 'Равнины', character: 'villager' },
-      { text: 'Туманный лес', character: 'slenderman' }
+      { text: 'Равнины', character: 'villager' }
     ]
   },
   {
@@ -52,8 +48,7 @@ export const questions: Question[] = [
       { text: 'Надежным', character: 'steve' },
       { text: 'Смелым', character: 'alex' },
       { text: 'Опасным', character: 'creeper' },
-      { text: 'Добрым', character: 'villager' },
-      { text: 'Пугающим', character: 'slenderman' }
+      { text: 'Добрым', character: 'villager' }
     ]
   },
   {
@@ -63,8 +58,7 @@ export const questions: Question[] = [
       { text: 'Сила', character: 'steve' },
       { text: 'Ловкость', character: 'alex' },
       { text: 'Внезапность', character: 'creeper' },
-      { text: 'Дипломатия', character: 'villager' },
-      { text: 'Страх', character: 'slenderman' }
+      { text: 'Дипломатия', character: 'villager' }
     ]
   },
   {
@@ -74,8 +68,7 @@ export const questions: Question[] = [
       { text: 'Ресурсы', character: 'steve' },
       { text: 'Приключения', character: 'alex' },
       { text: 'Внимание', character: 'creeper' },
-      { text: 'Друзей', character: 'villager' },
-      { text: 'Жертв', character: 'slenderman' }
+      { text: 'Друзей', character: 'villager' }
     ]
   },
   {
@@ -85,8 +78,7 @@ export const questions: Question[] = [
       { text: 'Меч', character: 'steve' },
       { text: 'Лук', character: 'alex' },
       { text: 'Я сам оружие', character: 'creeper' },
-      { text: 'Не нужно', character: 'villager' },
-      { text: 'Взгляд', character: 'slenderman' }
+      { text: 'Не нужно', character: 'villager' }
     ]
   },
   {
@@ -96,8 +88,7 @@ export const questions: Question[] = [
       { text: 'Уверенно', character: 'steve' },
       { text: 'Быстро', character: 'alex' },
       { text: 'Скрытно', character: 'creeper' },
-      { text: 'Медленно', character: 'villager' },
-      { text: 'Телепортируюсь', character: 'slenderman' }
+      { text: 'Медленно', character: 'villager' }
     ]
   },
   {
@@ -107,8 +98,7 @@ export const questions: Question[] = [
       { text: 'Работаю', character: 'steve' },
       { text: 'Охочусь', character: 'alex' },
       { text: 'Брожу', character: 'creeper' },
-      { text: 'Сплю', character: 'villager' },
-      { text: 'Преследую', character: 'slenderman' }
+      { text: 'Сплю', character: 'villager' }
     ]
   },
   {
@@ -118,8 +108,7 @@ export const questions: Question[] = [
       { text: 'Крепость', character: 'steve' },
       { text: 'Дом на дереве', character: 'alex' },
       { text: 'Бункер', character: 'creeper' },
-      { text: 'Коттедж', character: 'villager' },
-      { text: 'Нет дома', character: 'slenderman' }
+      { text: 'Коттедж', character: 'villager' }
     ]
   },
   {
@@ -129,8 +118,7 @@ export const questions: Question[] = [
       { text: 'Лидер', character: 'steve' },
       { text: 'Разведчик', character: 'alex' },
       { text: 'Одиночка', character: 'creeper' },
-      { text: 'Помощник', character: 'villager' },
-      { text: 'Наблюдатель', character: 'slenderman' }
+      { text: 'Помощник', character: 'villager' }
     ]
   },
   {
@@ -140,8 +128,7 @@ export const questions: Question[] = [
       { text: 'Делаю броню', character: 'steve' },
       { text: 'Зачаровываю', character: 'alex' },
       { text: 'Прячу', character: 'creeper' },
-      { text: 'Торгую', character: 'villager' },
-      { text: 'Не интересует', character: 'slenderman' }
+      { text: 'Торгую', character: 'villager' }
     ]
   },
   {
@@ -151,8 +138,7 @@ export const questions: Question[] = [
       { text: 'Уверенный', character: 'steve' },
       { text: 'Любопытный', character: 'alex' },
       { text: 'Безумный', character: 'creeper' },
-      { text: 'Добрый', character: 'villager' },
-      { text: 'Пустой', character: 'slenderman' }
+      { text: 'Добрый', character: 'villager' }
     ]
   },
   {
@@ -162,8 +148,7 @@ export const questions: Question[] = [
       { text: 'Функционально', character: 'steve' },
       { text: 'Экзотично', character: 'alex' },
       { text: 'Минимально', character: 'creeper' },
-      { text: 'Уютно', character: 'villager' },
-      { text: 'Пусто и жутко', character: 'slenderman' }
+      { text: 'Уютно', character: 'villager' }
     ]
   },
   {
@@ -173,8 +158,7 @@ export const questions: Question[] = [
       { text: 'В лоб', character: 'steve' },
       { text: 'Маневры', character: 'alex' },
       { text: 'Взрыв', character: 'creeper' },
-      { text: 'Не дерусь', character: 'villager' },
-      { text: 'Психология', character: 'slenderman' }
+      { text: 'Не дерусь', character: 'villager' }
     ]
   },
   {
@@ -184,8 +168,7 @@ export const questions: Question[] = [
       { text: 'Все подряд', character: 'steve' },
       { text: 'Редкое', character: 'alex' },
       { text: 'Ничего', character: 'creeper' },
-      { text: 'Овощи', character: 'villager' },
-      { text: 'Страхи', character: 'slenderman' }
+      { text: 'Овощи', character: 'villager' }
     ]
   },
   {
@@ -195,8 +178,7 @@ export const questions: Question[] = [
       { text: 'Ищу руду', character: 'steve' },
       { text: 'Исследую', character: 'alex' },
       { text: 'Скрываюсь', character: 'creeper' },
-      { text: 'Не хожу', character: 'villager' },
-      { text: 'Преследую', character: 'slenderman' }
+      { text: 'Не хожу', character: 'villager' }
     ]
   },
   {
@@ -206,8 +188,7 @@ export const questions: Question[] = [
       { text: 'Силы', character: 'steve' },
       { text: 'Скорости', character: 'alex' },
       { text: 'Невидимости', character: 'creeper' },
-      { text: 'Лечения', character: 'villager' },
-      { text: 'Тьмы', character: 'slenderman' }
+      { text: 'Лечения', character: 'villager' }
     ]
   },
   {
@@ -217,8 +198,7 @@ export const questions: Question[] = [
       { text: 'Победить', character: 'steve' },
       { text: 'Исследовать', character: 'alex' },
       { text: 'Быть собой', character: 'creeper' },
-      { text: 'Дружить', character: 'villager' },
-      { text: 'Пугать', character: 'slenderman' }
+      { text: 'Дружить', character: 'villager' }
     ]
   }
 ];
