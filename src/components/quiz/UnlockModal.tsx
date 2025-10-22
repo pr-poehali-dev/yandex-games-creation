@@ -43,7 +43,7 @@ export function UnlockModal({ characterName, onWatchAd, onClose }: UnlockModalPr
             <Button
               onClick={onClose}
               variant="outline"
-              className="w-full h-auto py-3 border-2 border-orange-600 hover:bg-orange-950/40 text-orange-300 hover:text-orange-200"
+              className="w-full h-auto py-3 border-2 border-orange-500 bg-white/95 hover:bg-orange-600 text-gray-900 hover:text-white transition-all"
             >
               <span className="break-words text-center">Показать результат: <span className="font-bold">{characterName}</span></span>
             </Button>

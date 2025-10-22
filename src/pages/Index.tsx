@@ -20,9 +20,20 @@ export default function Index() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio('https://assets.mixkit.co/music/download/mixkit-halloween-spooky-dark-atmospheric-background-music-2822.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.25;
+    const audio = new Audio('https://assets.mixkit.co/music/download/mixkit-halloween-spooky-dark-atmospheric-background-music-2822.mp3');
+    audio.loop = true;
+    audio.volume = 0.25;
+    audio.preload = 'auto';
+    
+    audio.addEventListener('canplaythrough', () => {
+      console.log('Аудио загружено и готово');
+    });
+    
+    audio.addEventListener('error', (e) => {
+      console.error('Ошибка загрузки аудио:', e);
+    });
+    
+    audioRef.current = audio;
     
     return () => {
       if (audioRef.current) {
