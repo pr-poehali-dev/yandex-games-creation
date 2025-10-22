@@ -89,7 +89,7 @@ export function QuestionScreen({
               onClick={onPrevious}
               disabled={!canGoPrevious}
               variant="outline"
-              className="flex-1 border-2 border-orange-600 hover:bg-orange-950/30 text-orange-300 hover:text-orange-200 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="flex-1 border-2 border-orange-500 bg-white/95 hover:bg-orange-600 text-gray-900 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               <Icon name="ChevronLeft" size={20} className="mr-1" />
               Назад
@@ -99,7 +99,7 @@ export function QuestionScreen({
               <Button
                 onClick={onNext}
                 variant="outline"
-                className="flex-1 border-2 border-orange-600 hover:bg-orange-950/30 text-orange-300 hover:text-orange-200"
+                className="flex-1 border-2 border-orange-500 bg-white/95 hover:bg-orange-600 text-gray-900 hover:text-white transition-all"
               >
                 Далее
                 <Icon name="ChevronRight" size={20} className="ml-1" />
@@ -110,7 +110,7 @@ export function QuestionScreen({
           <Button
             onClick={onRestart}
             variant="outline"
-            className="w-full border-2 border-orange-600 hover:bg-orange-950/30 text-orange-300 hover:text-orange-200"
+            className="w-full border-2 border-orange-500 bg-white/95 hover:bg-orange-600 text-gray-900 hover:text-white transition-all"
           >
             <Icon name="Home" size={20} className="mr-2" />
             Начать заново
